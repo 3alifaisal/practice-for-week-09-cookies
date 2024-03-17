@@ -1,18 +1,44 @@
 /* ============================== PHASE 1 + 2 ============================== */
+function getCookie(cookieName) {
+    const cookies = document.cookie.split(";");
+    for(let i = 0; i < cookies.length; i++)  {
+        const cookie = cookies[i].trim();
+        // this is industry standard so i am learning it this way
+        // the equal indicates the end of key and beginning of value 
+
+        if(cookie.startsWith(cookieName +"=")){
+            // returning the value of the cookie 
+            return cookie.slice(cookieName.length +1)
+        }
+    }
+    return null;
+}
+
 
 // For storing user's theme selection in cookies
 function storeTheme(themeName) {
     // Your code here
+    document.cookie = `themeName=${themeName}`
+    console.log(document.cookie);
 }
 
 // For restoring theme from cookies, if selected by the user in the past
 function restoreTheme() {
     // Your code here
+    const ThemeCookie = getCookie("themeName");
+    if(ThemeCookie){
+        setTheme(ThemeCookie);
+    }
 }
 
 // For clearing theme selection from cookies (reset to default)
 function clearTheme() {
     // Your code here
+
+    document.cookie = "themeName=;max-age=0";
+    
+    console.log("i was called ")
+
 }
 
 /* ================================ PHASE 3 ================================ */
@@ -20,16 +46,28 @@ function clearTheme() {
 // For storing user's display name in cookies
 function storeName(displayName) {
     // Your code here
+    let now = new Date();
+    // pre set to 15seconds 
+    const expirationDate = new Date(now.getTime() + 15 *1000);
+    const expires = expirationDate.toUTCString();
+    // max-age = 15 also works 
+    document.cookie = `displayName=${displayName}; expires=${expires};path=/`
+
 }
 
 // For restoring user's display name from cookies, if set in the past
 function restoreName() {
     // Your code here
+    const NameCookie = getCookie("displayName");
+    if(NameCookie) {
+        setInputValue("display-name",NameCookie);
+    }
 }
 
 // For clearing user's display name from cookies
 function clearName() {
     // Your code here
+    document.cookie = "displayName=; max-age=0";
 }
 
 /* ========================================================================= */
